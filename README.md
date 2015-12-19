@@ -1,3 +1,3 @@
 # Monolithica
 
-## Simple html canvas space game created by my son.
+##### Simple HTML5 canvas space game created by my son.

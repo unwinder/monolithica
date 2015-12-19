@@ -27,9 +27,9 @@ var spaceship = {
 
 function createAsteroids() {
   var asteroids = [];
-  for (i = 0; i < 500; i++) {
-    var xOffset = Math.floor((Math.random() * 6000) + 1); 
-    var yOffset = Math.floor((Math.random() * 700) + 1); 
+  for (i = 0; i < 170; i++) {
+    var xOffset = Math.floor((Math.random() * (screenWidth *2)) + 1); 
+    var yOffset = Math.floor((Math.random() * screenHeight) + 1); 
     var width = Math.floor((Math.random() * 100) + 10); 
     var height = Math.floor((Math.random() * 100) + 10); 
     var randX = 1;
@@ -53,19 +53,25 @@ function draw (item, color) {
   });
 }
 
-function drawAsteroid () {
-  
-}
-
-function isHit (spaceship, asteroid) {
-  return false;
+function checkForHit (spaceship, asteroid) {
+  for(var i=0; i< asteroid.coordinates.length; i++) {
+    if (asteroid.coordinates[i].x <= screenWidth && asteroid.coordinates[i].x >= 0) {
+      gameBeaten=false;
+      for(var j=0; j< spaceship.coordinates.length; j++) {
+        if (spaceship.coordinates[j].x === asteroid.coordinates[i].x && spaceship.coordinates[j].y === asteroid.coordinates[i].y) {
+          gameOver = true;
+          return;
+        }
+      }
+    }
+  }
 }
 
 function moveAsteroid (asteroid) {
   drawIt = false;
   asteroid.coordinates.forEach ( function (coordinate) { 
     coordinate.x=coordinate.x-1;
-    if (coordinate.x < 1000) {
+    if (coordinate.x < screenWidth) {
       drawIt = true;
     }
   });
@@ -75,58 +81,107 @@ function moveAsteroid (asteroid) {
 }
 
 
-
+function gameEnded () {
+  
+}
 
 function checkForMove (spaceship) {
-  if(input.isDown('DOWN') || input.isDown('s')) {
-    spaceship.coordinates.forEach ( function (coordinate) { 
-      coordinate.y = coordinate.y + 1;
-    });
+  if(input.isDown('DOWN')) {
+    var canMove = true;
+    for (var i = 0; i < spaceship.coordinates.length; i++) {
+      if (spaceship.coordinates[i].y === screenHeight) {
+        canMove = false;
+        break;
+      }
+    }
+    if (canMove) {
+      spaceship.coordinates.forEach ( function (coordinate) { 
+        coordinate.y++;
+      });
+    }
   }
 
-  if(input.isDown('UP') || input.isDown('w')) {
-    spaceship.coordinates.forEach ( function (coordinate) { 
-      coordinate.y = coordinate.y - 1;
-    });
+  if(input.isDown('UP')) {
+    var canMove = true;
+    for (var i = 0; i < spaceship.coordinates.length; i++) {
+      if (spaceship.coordinates[i].y === 0) {
+        canMove = false;
+        break;
+      }
+    }
+    if (canMove) {
+      spaceship.coordinates.forEach ( function (coordinate) { 
+        coordinate.y--;
+      });
+    }
   }
 
-  if(input.isDown('LEFT') || input.isDown('a')) {
-    spaceship.coordinates.forEach ( function (coordinate) { 
-      coordinate.x = coordinate.x - 1;
-    });
+  if(input.isDown('LEFT')) {
+    var canMove = true;
+    for (var i = 0; i < spaceship.coordinates.length; i++) {
+      if (spaceship.coordinates[i].x === 0) {
+        canMove = false;
+        break;
+      }
+    }
+    if (canMove) {
+      spaceship.coordinates.forEach ( function (coordinate) { 
+        coordinate.x = coordinate.x - 1;
+      });
+    }
   }
 
   if(input.isDown('RIGHT') || input.isDown('d')) {
-    spaceship.coordinates.forEach ( function (coordinate) { 
-      coordinate.x = coordinate.x + 1;
-    });
+    var canMove = true;
+    for (var i = 0; i < spaceship.coordinates.length; i++) {
+      if (spaceship.coordinates[i].x === screenWidth) {
+        canMove = false;
+        break;
+      }
+    }
+    if (canMove) {
+      spaceship.coordinates.forEach ( function (coordinate) { 
+        coordinate.x = coordinate.x + 1;
+      });
+    }
   }
   draw (spaceship, "white");
 }
 
 function main () {
+  checkForMove (spaceship);
+  checkForMove (spaceship);
   ctx.drawImage(spaceBackground, 0, 0);
   checkForMove (spaceship);
-  for(i=0; i< asteroids.length; i++) {
-    // draw (asteroids[i]);
-    if(isHit(spaceship, asteroids[i])) {
-      gameOver = true;
-      break;
-    }
+  gameBeaten=true;
+  for(var i=0; i< asteroids.length; i++) {
+    checkForHit(spaceship, asteroids[i]);
     moveAsteroid(asteroids[i])
   }
-  if (!gameOver) {
-    setTimeout(main, 1000/60);
+  if (gameOver) {
+    ctx.fillStyle = "white";
+    ctx.font = "bold 24px Arial";
+    ctx.fillText("GAME OVER!", 300, 300);
+    return;
   }
+  if (gameBeaten) {
+      ctx.fillStyle = "white";
+      ctx.font = "bold 24px Arial";
+      ctx.fillText("CONGRATULATIONS! You are an epic space pilot", 200, 300);
+      return;
+  } 
+  setTimeout(main, 1000/60); 
 }
 
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
-var gameOver = false;
+var screenWidth = canvas.width = 1100;
+var screenHeight = canvas.height = 650;
 var asteroids = createAsteroids();
+var gameBeaten = false;
+var gameOver = false;
 
-canvas.width = 1000;
-canvas.height = 700;
+
 document.body.appendChild(canvas);
 
 var spaceBackground = new Image();
