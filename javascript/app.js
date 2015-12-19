@@ -28,13 +28,14 @@ var spaceship = {
 function createAsteroids() {
   var asteroids = [];
   for (i = 0; i < 170; i++) {
-    var xOffset = Math.floor((Math.random() * (screenWidth *2)) + 1); 
+    var speed = Math.floor((Math.random() * maxSpeed) + 1);
+    var xOffset = Math.floor((Math.random() * (screenWidth * speed)) + 1); 
     var yOffset = Math.floor((Math.random() * screenHeight) + 1); 
     var width = Math.floor((Math.random() * 100) + 10); 
     var height = Math.floor((Math.random() * 100) + 10); 
     var randX = 1;
-    var randY = 1;
-    asteroids[i] = { coordinates:[] };
+    var randY = 1;  
+    asteroids[i] = { coordinates:[], speed:speed};
     for (var x = xOffset; x< xOffset + width; x += randX) {
       randX = Math.floor((Math.random() * 3) + 1);
       for (var y = yOffset; y < yOffset + height; y+= randY) {
@@ -69,14 +70,16 @@ function checkForHit (spaceship, asteroid) {
 
 function moveAsteroid (asteroid) {
   drawIt = false;
-  asteroid.coordinates.forEach ( function (coordinate) { 
-    coordinate.x=coordinate.x-1;
-    if (coordinate.x < screenWidth) {
-      drawIt = true;
+  for (var i = 1; i<= asteroid.speed; i++) {
+    asteroid.coordinates.forEach ( function (coordinate) { 
+      coordinate.x=coordinate.x-1;
+      if (coordinate.x < screenWidth) {
+        drawIt = true;
+      }
+    });
+    if (drawIt) {
+      draw (asteroid, "gray");
     }
-  });
-  if (drawIt) {
-    draw (asteroid, "gray");
   }
 }
 
@@ -167,7 +170,7 @@ function main () {
   if (gameBeaten) {
       ctx.fillStyle = "white";
       ctx.font = "bold 24px Arial";
-      ctx.fillText("CONGRATULATIONS! You are an epic space pilot", 200, 300);
+      ctx.fillText("CONGRATULATIONS! You are an epic space pilot", 100, 300);
       return;
   } 
   setTimeout(main, 1000/60); 
@@ -177,15 +180,15 @@ var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
 var screenWidth = canvas.width = 1100;
 var screenHeight = canvas.height = 650;
-var asteroids = createAsteroids();
 var gameBeaten = false;
 var gameOver = false;
-
+var maxSpeed = 3;
+var asteroids = createAsteroids();
 
 document.body.appendChild(canvas);
 
 var spaceBackground = new Image();
-spaceBackground.src = "/monolithica/img/space_background.png";
+spaceBackground.src = "../img/space_background.png";
 spaceBackground.onload = function() {
   ctx.drawImage(spaceBackground, 0, 0);
 }
