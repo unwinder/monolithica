@@ -188,7 +188,7 @@ var asteroids = createAsteroids();
 document.body.appendChild(canvas);
 
 var spaceBackground = new Image();
-spaceBackground.src = "../img/space_background.png";
+spaceBackground.src = "/monolithica/img/space_background.png";
 spaceBackground.onload = function() {
   ctx.drawImage(spaceBackground, 0, 0);
 }
