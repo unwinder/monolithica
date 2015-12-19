@@ -1,7 +1,29 @@
 /**
  * space game
  */
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+} 
 
+function getCookieScore(player) {
+  var score=getCookie(player);
+  if (score!="") {
+      return parseInt (score);
+  } else{
+      return 0;
+  }
+} 
+
+function getURLParameter(name) {
+  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
+}
 
 var spaceship = {
     coordinates:[{x:1,y:0}, {x:2,y:0}, {x:3,y:0}, {x:4,y:0}, {x:5,y:0}, {x:6,y:0},
@@ -26,10 +48,11 @@ var spaceship = {
 
 
 function createAsteroids() {
+
   var asteroids = [];
-  for (i = 0; i < 170; i++) {
+  for (i = 0; i < asteroidCount; i++) {
     var speed = Math.floor((Math.random() * maxSpeed) + 1);
-    var xOffset = Math.floor((Math.random() * (screenWidth * speed)) + 1); 
+    var xOffset = Math.floor((Math.random() * (screenWidth * speed)) + 100); 
     var yOffset = Math.floor((Math.random() * screenHeight) + 1); 
     var width = Math.floor((Math.random() * 100) + 10); 
     var height = Math.floor((Math.random() * 100) + 10); 
@@ -162,36 +185,79 @@ function main () {
     moveAsteroid(asteroids[i])
   }
   if (gameOver) {
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "black";
     ctx.font = "bold 24px Arial";
-    ctx.fillText("GAME OVER!", 300, 300);
+    ctx.fillText("GAME OVER", 450, 400);
+    score--;
+    document.cookie=player + "=" + score + "; path=/"; 
+    document.getElementById ("score").innerHTML = score;
     return;
   }
   if (gameBeaten) {
-      ctx.fillStyle = "white";
+      ctx.fillStyle = "black";
       ctx.font = "bold 24px Arial";
-      ctx.fillText("CONGRATULATIONS! You are an epic space pilot", 100, 300);
+      if (getURLParameter("level") === "beginner") {
+        ctx.fillText("Congratulations " + player + "! You are on the way.", 400, 400);
+        score++;
+      } else if (getURLParameter("level") === "intermediate") {
+        ctx.fillText("Congratulations " + player + "! You are actually pretty good.", 400, 400);
+        score+=5;
+      } else if (getURLParameter("level") === "expert") {
+        ctx.fillText("Congratulations " + player + "! You are an epic space pilot!", 400, 400);
+        score+=20;
+      }
+      document.cookie=player + "=" + score + "; path=/"; 
+      document.getElementById ("score").innerHTML = score;
       return;
   } 
-  setTimeout(main, 1000/60); 
+  if (!paused) {
+    setTimeout(main, 1000/60); 
+  }
 }
 
-var canvas = document.createElement("canvas");
+var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var screenWidth = canvas.width = 1100;
 var screenHeight = canvas.height = 650;
 var gameBeaten = false;
 var gameOver = false;
 var maxSpeed = 3;
+var paused = false;
+
+var asteroidCount = 0;
+if (getURLParameter("level") === "beginner") {
+  asteroidCount = 75;
+  maxSpeed = 2;
+} else if (getURLParameter("level") === "intermediate") {
+  asteroidCount = 150;
+  maxSpeed = 3;
+} else if (getURLParameter("level") === "expert") {
+  asteroidCount = 200;
+  maxSpeed = 3;
+}
 var asteroids = createAsteroids();
-
+var player = getURLParameter("player");
+document.getElementById ("player").innerHTML = player;
+var score = getCookieScore (player);
+document.getElementById ("score").innerHTML = score;
 document.body.appendChild(canvas);
-
 var spaceBackground = new Image();
 spaceBackground.src = "/monolithica/img/space_background.png";
 spaceBackground.onload = function() {
   ctx.drawImage(spaceBackground, 0, 0);
 }
+
+
+document.addEventListener('keydown', function(e) {
+  if (String.fromCharCode(e.keyCode) == 'P') {
+    if (paused) {
+      paused = false;
+      setTimeout(main, 1000/60); 
+    } else {
+      paused = true;
+    }
+  }
+});
 
 
 main();
