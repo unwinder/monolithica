@@ -2,7 +2,7 @@
  * keypress library
  */
 
-(function() {
+
     var pressedKeys = {};
 
     function setKey(event, status) {
@@ -45,4 +45,5 @@
             return pressedKeys[key.toUpperCase()];
         }
     };
-})();
+    
+    

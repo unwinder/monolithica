@@ -1,0 +1,25 @@
+<head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><title>jerry game</title>
+<base href="/"/>
+<!--  link rel="stylesheet" href="/styles/main.css"/-->
+</head>
+<body style="background-color:black">
+<!--  script src="http://localhost:8080/jerry/app.js"></script-->
+<table style="float:right">
+<tr>
+<td><canvas id="canvas" ></canvas></td>
+<td>
+    <table style="float:left">
+        <tr style="color:white;font: bold 36px Arial;height: 50px;"><td colspan="3">MONOLITHICA</td></tr>
+        <tr style="color:white;font: bold 16px Arial;height: 50px;"><td colspan="3">PLAYER: <span id="player"></span></td></tr>
+        <tr style="color:white;font: bold 16px Arial"><td colspan="3">SCORE:  <span id="score"></span></td></tr>
+        <tr style="height: 400px;"></tr>
+        <tr><td></td><td><button style="font:24px Arial;width:95px;" onmousedown="pressedKeys['UP'] = true;" onmouseup="pressedKeys['UP'] = false;">^</button></td></tr>
+        <tr><td><button style="font:24px Arial;width:95px;" onmousedown="pressedKeys['LEFT'] = true;" onmouseup="pressedKeys['LEFT'] = false;"><</button></td><td></td><td><button style="font:24px Arial;width:95px;" onmousedown="pressedKeys['RIGHT'] = true;" onmouseup="pressedKeys['RIGHT'] = false;">></button></td></tr>
+        <tr><td></td><td><button style="font:24px Arial;width:95px;" onmousedown="pressedKeys['DOWN'] = true;" onmouseup="pressedKeys['DOWN'] = false;">v</button></td></tr>
+    </table>
+</td>
+</tr>
+</table>
+<script src="javascript/keypress.js"></script>
+<script src="javascript/app.js"></script>
+</body>
