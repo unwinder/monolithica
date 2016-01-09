@@ -330,24 +330,8 @@ function main () {
   if (gameBeaten) {
       ctx.fillStyle = "black";
       ctx.font = "bold 24px Arial";
-      if (level === "beginner") {
-        ctx.fillText("Congratulations " + player + "! You are on the way.", 400, 400);
-        score++;
-      } else if (level === "intermediate") {
-        ctx.fillText("Congratulations " + player + "! You are actually pretty good.", 400, 400);
-        score+=5;
-      } else if (level === "expert") {
-        ctx.fillText("Congratulations " + player + "! You are an epic space pilot!", 400, 400);
-        score+=10;
-      } else if (level === "crazy") {
-        ctx.fillText("Go outside " + player + "!  You've been practicing way too long.", 400, 400);
-        score+=20;
-      } else if (level === "impossible") {
-        ctx.fillText("Are you an alien " + player + "?  You have superhuman abilities.", 400, 400);
-        score+=20;
-      }
-      
-     
+      ctx.fillText("Congratulations " + player + "! " +  levelMsg, 400, 400);
+      score += levelPoints;
       document.cookie=player + "=" + score + "; path=/"; 
       document.getElementById ("score").innerHTML = score;
       disableButtons(null);
@@ -359,14 +343,7 @@ function main () {
 }
 
 function disableButtons(disabled) {
-  document.getElementById("jerryButton1").disabled=disabled;
-  document.getElementById("jerryButton2").disabled=disabled;
-  document.getElementById("jerryButton3").disabled=disabled;
-  document.getElementById("jerryButton4").disabled=disabled;
-  document.getElementById("jerryButton5").disabled=disabled;
-  document.getElementById("willButton").disabled=disabled;
-  document.getElementById("mattyButton").disabled=disabled;
-  document.getElementById("bryanButton").disabled=disabled;
+  document.getElementById("beginGame").disabled=disabled;
 }
 
 function init () {
@@ -374,24 +351,34 @@ function init () {
   if (level === "beginner") {
     asteroidCount = 100;
     maxSpeed = 2;
+    levelPoints = 1;
+    levelMsg = "You are on the way.";
   } else if (level === "intermediate") {
     asteroidCount = 180;
     maxSpeed = 3;
+    levelPoints = 5
+    levelMsg = "You are actually pretty good.";
   } else if (level === "expert") {
     asteroidCount = 230;
     maxSpeed = 3;
+    levelPoints = 10;
+    levelMsg = "You are an epic space pilot!";
   } else if (level === "crazy") {
     asteroidCount = 250;
     maxSpeed = 3;
+    levelPoints = 15;
+    levelMsg = "You've been practicing way too long.";
   }  else if (level === "impossible") {
     asteroidCount = 180;
     maxSpeed = 3;
+    levelPoints = 20;
+    levelMsg = "You have superhuman abilities.";
   }
   gameBeaten = false;
   gameOver = false;
-  if (player === "Will") {
+  if (spaceshipSelect === "willSpaceship") {
     spaceship=initWillSpaceship();
-  } else if (player === "Jerry") {
+  } else if (spaceshipSelect === "jerrySpaceship") {
     spaceship=initJerrySpaceship();
   } else {
     spaceship=initSpaceship();
@@ -418,8 +405,10 @@ var gameBeaten = false;
 var gameOver = false;
 var maxSpeed = 3;
 var paused = false;
+var spaceshipSelect;
 var spaceship;
 var asteroidCount = 0;
+var levelPoints = 0;
 document.body.appendChild(canvas);
 var spaceBackground = new Image();
 spaceBackground.src = "../img/space_background.png";

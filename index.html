@@ -14,18 +14,50 @@
         <tr style="color:white;font: bold 36px Arial;height: 50px;"><td colspan="2">MONOLITHICA</td></tr>
         <tr style="height:80px"></tr>
         
-        <tr style="color:white;font: bold 16px Arial;height: 50px;"><td colspan="2">PLAYER: <span id="player"></span></td></tr>
-        <tr style="color:white;font: bold 16px Arial;height: 50px;"><td colspan="3">SCORE:  <span id="score"></span></td></tr>
-        <tr style="color:white;font: bold 16px Arial;height: 50px;"><td colspan="3">LIVES:  <span id="lives"></span></td></tr>
+        <tr style="color:white;font: bold 16px Arial;height: 50px;"><td>PLAYER:</td><td id="player"></td></tr>
+        <tr style="color:white;font: bold 16px Arial;height: 50px;"><td>SCORE:</td><td id="score"></span></td></tr>
+        <tr style="color:white;font: bold 16px Arial;height: 50px;"><td>LIVES:</td><td id="lives"></span></td></tr>
         
-        <tr style="height:50px"><td colspan="3"><button id="jerryButton1" style="font:16px Arial;width:200px;" onclick="level='beginner'; player='Jerry'; init()">Jerry Beginner</button></td></tr>
-        <tr style="height:50px"><td colspan="3"><button id="jerryButton2" style="font:16px Arial;width:200px;" onclick="level='intermediate';player='Jerry'; init()">Jerry Intermediate</button></td></tr>
-        <tr style="height:50px"><td colspan="3"><button id="jerryButton3" style="font:16px Arial;width:200px;" onclick="level='expert';player='Jerry'; init()">Jerry Expert</button></td></tr>
-        <tr style="height:50px"><td colspan="3"><button id="jerryButton4" style="font:16px Arial;width:200px;" onclick="level='crazy';player='Jerry'; init()">Jerry Crazy</button></td></tr>
-        <tr style="height:50px"><td colspan="3"><button id="jerryButton5" style="font:16px Arial;width:200px;" onclick="level='impossible';player='Jerry'; init()">Jerry Impossible</button></td></tr>
-        <tr style="height:50px"><td colspan="3"><button id="willButton" style="font:16px Arial;width:200px;" onclick="level='intermediate'; player='Will'; init()">Will Intermediate</button></td></tr>
-        <tr style="height:50px"><td colspan="3"><button id="mattyButton" style="font:16px Arial;width:200px;" onclick="level='intermediate';player='Matty'; init()">Matty Intermediate</button></td></tr>
-        <tr style="height:50px"><td colspan="3"><button id="bryanButton" style="font:16px Arial;width:200px;" onclick="level='expert';player='Bryan'; init()">Bryan Expert</button></td></tr>
+        <tr style="height:50px">
+            <td style="color:white;font: bold 16px Arial;">
+                Choose Level:
+            </td>
+            <td>
+                <select id="levelSelect" style="font:16px Arial;">
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="expert">Expert</option>
+                <option value="crazy">Crazy</option>
+                <option value="impossible">Impossible</option>
+                </select>
+            </td>
+        </tr>
+        <tr style="height:50px">
+            <td style="color:white;font: bold 16px Arial;">
+                Choose Spaceship:
+            </td>
+            <td>
+                <select id="spaceshipSelect" style="font:16px Arial;">
+                <option value="willSpaceship">The Cute</option>
+                <option value="jerrySpaceship">The Incredible</option>
+                <option value="boringSpaceship">The Boring</option>
+                </select>
+            </td>
+        </tr>
+        <tr style="height:50px">
+            <td style="color:white;font: bold 16px Arial;">
+                Choose Player:
+            </td>
+            <td>
+                <select id="playerSelect" style="font:16px Arial;">
+                <option value="Jerry">Jerry</option>
+                <option value="Will">Will</option>
+                <option value="Matty">Matty</option>
+                <option value="Bryan">Bryan</option>
+                </select>
+            </td>
+        </tr>
+        <tr style="height:50px"><td><button id="beginGame" style="font:16px Arial;" onclick="level=document.getElementById('levelSelect').value;player=document.getElementById('playerSelect').value;spaceshipSelect=document.getElementById('spaceshipSelect').value; init()">Begin Game</button></td></tr>
         
         <!-- tr><td colspan="3"><button style="font:24px Arial;width:200px;" onmousedown="pressedKeys['UP'] = true;" onmouseup="pressedKeys['UP'] = false;">^</button></td></tr>
         <tr><td  ><button style="width:73px;align:left;font:24px Arial;" onmousedown="pressedKeys['LEFT'] = true;" onmouseup="pressedKeys['LEFT'] = false;"><</button></td><td ><button style="align:left;font:24px Arial;width:73px;" onmousedown="pressedKeys['RIGHT'] = true;" onmouseup="pressedKeys['RIGHT'] = false;">></button></td></tr>
